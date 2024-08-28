@@ -9,7 +9,7 @@ const Producto = () => {
  const handleClose= () => setOpen(false);
     return (
     <div onClick={handleOpen}>
-        <Image src={'/burger-menu.png'} alt='menu-logo' width={40} height={40}/>
+        
         <ProductList handleClose={handleClose} open={open}/>
     </div>
   )

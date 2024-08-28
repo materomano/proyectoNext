@@ -1,24 +1,38 @@
-"use client";
 import ProductList from '@/app/components/ProductList';
-import { useParams } from 'next/navigation';
-import React from 'react';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '@/app/firebase/config';
 
-import { mockData } from '@/app/data/Products';
+const getProducts = async (category) => {
+  try {
+    const productRef = collection(db, 'productos');
+    let q;
+    if (category === 'all') {
+      q = query(productRef);
+    } else {
+      q = query(productRef, where('category', '==', category));
+    }
+    const querySnapshots = await getDocs(q);
+    const docs = querySnapshots.docs.map((doc) => doc.data());
+    return docs;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return [];
+  }
+};
 
-const Tipo = () => {
-  const params = useParams();
-  const category = params.category;
-  console.log('Categoría recibida de useParams:', category);  // Verifica el valor de category
+export async function getServerSideProps({ params }) {
+  const { category } = params;
+  const products = await getProducts(category);
+  return { props: { category, products } };
+}
 
-  const filterData = category === 'all'
-    ? mockData 
-    : mockData.filter(item => item.category.toLowerCase() === category);
-  console.log('Datos filtrados:', filterData);  // Verifica los datos filtrados
+const Tipo = ({ category, products }) => {
+  console.log({ products });
 
   return (
     <>
       <h1>Esta página es por la categoría: {category}</h1>
-      <ProductList category={category} data={filterData} />
+      <ProductList category={category} products={products} />
     </>
   );
 };

@@ -1,6 +1,6 @@
 "use client"
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 import ProductList from '../components/ProductList';
 import { mockData } from '../data/Products';
@@ -10,7 +10,11 @@ const Productos = () => {
     return (
     <>
         <h1>Productos:</h1>
-        <ProductList category={'all'} data={mockData}/>
+        <Suspense fallback={<div>Loading!!!</div>}>
+
+          <ProductList category={'all'} data={mockData}/>
+        </Suspense>
+        
     </>
  
   )

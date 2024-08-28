@@ -1,6 +1,7 @@
 'use client'
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const MenuList = ({ open, handleClose }) => {
   const handleClick = (e) => {
@@ -9,13 +10,13 @@ const MenuList = ({ open, handleClose }) => {
   };
 
   return (
-    <div className={`${open ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all fixed inset-0 bg-black/50 flex justify-end`}>
-      <aside className={`${!open ? 'translate-x-48' : ''} transition-all w-48 bg-gray-500`}>
-        <div onClick={handleClick} className='text-white text-right p-4 cursor-pointer'>
-          X
-        </div>
-        <nav className='flex mt-4 flex-col gap-3 px-3'>
-          <Link href='carrito' className='text-white p-2' onClick={handleClick} >Carrito</Link>
+    <div>
+      <aside >
+       
+        <nav className='flex mt-4 flex gap-3 px-3'>
+          <Link href={'/carrito'} className='text-white p-2' onClick={handleClick} >
+            <Image src={'/carrito.png'} alt='menu-logo' width={80} height={60 }/>
+          </Link>
           <Link href='catalogo' className='text-white p-2' onClick={handleClick} >Catalogo</Link>
           <Link href='productos' className='text-white p-2' onClick={handleClick} >Productos</Link>
           <Link href='admin' className='text-white p-2' onClick={handleClick} >Admin</Link>

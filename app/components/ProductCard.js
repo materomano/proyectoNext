@@ -9,7 +9,7 @@ const ProductCard = ({ title, description, price, category, id, image }) => {
                     <Image
                         src={image}
                         alt={title}
-                        width={400}  // Ajusta el ancho según tus necesidades
+                        width={400} 
                         height={250} 
                         className='object-cover'
                     />
@@ -25,7 +25,7 @@ const ProductCard = ({ title, description, price, category, id, image }) => {
                         {category}
                     </span>
                     <span className='inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2'>
-                        ${price.toFixed(2)}
+                        ${price}
                     </span>
                 </div>
             </div>
