@@ -31,12 +31,12 @@ const ProductDetail = () => {
   const getProduct = async (id) => {
     try {
       const productsRef = collection(db, "productos");
-      const q = query(productsRef, where("id", "==", parseInt(id)));
+      const q = query(productsRef, where("id", "==", id));
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
         const productData = querySnapshot.docs[0].data();
-        console.log("Producto obtenido:", productData);
+       
         return productData;
       } else {
         console.log("Producto no encontrado");

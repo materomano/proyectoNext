@@ -20,11 +20,11 @@ const getProducts = async (category) => {
   }
 };
 
-export async function getServerSideProps({ params }) {
+const paramso = async ({ params }) => {
   const { category } = params;
   const products = await getProducts(category);
   return { props: { category, products } };
-}
+};
 
 const Tipo = ({ category, products }) => {
   console.log({ products });
