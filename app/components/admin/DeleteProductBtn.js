@@ -8,27 +8,34 @@ const DeleteProductBtn = ({ id }) => {
   const deleteProduct = () => {
     Swal.fire({
       icon: "warning",
-      title: "Do you want to delete this product?",
-      text: "Once deleted, you won't be able to recover this product.",
-      confirmButtonText: "Delete",
+      title: "¿Deseas eliminar este producto?",
+      text: "Una vez eliminado, no podrás recuperar este producto.",
+      confirmButtonText: "Eliminar",
       confirmButtonColor: "#d90429",
-
       showCancelButton: true,
+      cancelButtonText: "Cancelar",
     }).then(async (result) => {
       if (result.isConfirmed) {
         Swal.fire({
           icon: "success",
-          title: "Deleted!",
-          text: "The product has been deleted successufully",
+          title: "¡Eliminado!",
+          text: "El producto ha sido eliminado exitosamente.",
           iconColor: "#457b9d",
           timer: 2500,
           timerProgressBar: true,
           showConfirmButton: false,
         });
         try {
-          await deleteDoc(doc(db, "products", id));
+          await deleteDoc(doc(db, "productos", id));
         } catch (error) {
-          console.error("Error deleting product:", error);
+          console.error("Error al eliminar el producto:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Hubo un problema al eliminar el producto. Por favor, inténtalo nuevamente.",
+            confirmButtonText: "OK",
+            confirmButtonColor: "#d90429",
+          });
         }
       }
     });

@@ -11,16 +11,31 @@ const MenuList = ({ open, handleClose }) => {
 
   return (
     <div>
-      <aside >
-       
-        <nav className='flex mt-4 flex gap-3 px-3'>
-          <Link href={'/carrito'} className='text-white p-2' onClick={handleClick} >
-            <Image src={'/carrito.png'} alt='menu-logo' width={80} height={60 }/>
+      <aside>
+        {/* Responsive navigation menu */}
+        <nav className='flex  md:flex-row mt-4 gap-3 px-3 md:px-6'>
+          <Link href='/' className='text-white p-2 md:p-3' onClick={handleClick}>
+            Inicio
           </Link>
-          <Link href='catalogo' className='text-white p-2' onClick={handleClick} >Catalogo</Link>
-          <Link href='productos' className='text-white p-2' onClick={handleClick} >Productos</Link>
-          <Link href='admin' className='text-white p-2' onClick={handleClick} >Admin</Link>
-        </nav> 
+          <Link href='/productos' className='text-white p-2 md:p-3' onClick={handleClick}>
+            Productos
+          </Link>
+          <Link href='/admin' className='text-white p-2 md:p-3' onClick={handleClick}>
+            Admin
+          </Link>
+          <Link href='/catalogo' className='text-white p-2 md:p-3' onClick={handleClick}>
+            Catálogo
+          </Link>
+          <Link href='/carrito' onClick={handleClick}>
+            <Image
+              src='/carritoto.png'
+              alt='menu-logo'
+              width={45}
+              height={40}
+              className='w-[45px] h-[40px] mx-auto md:mx-0'
+            />
+          </Link>
+        </nav>
       </aside>
     </div>
   );

@@ -9,18 +9,21 @@ export const CartProvider = ({ children }) => {
   const addToCart = (item) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
-
+  
       if (existingItem) {
+        // Si el producto ya está en el carrito, incrementa la cantidad por el valor especificado
         return prevCart.map((cartItem) =>
           cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 } // Incrementa la cantidad
+            ? { ...cartItem, quantity: cartItem.quantity + item.quantity } // Incrementa la cantidad según la cantidad seleccionada
             : cartItem
         );
       } else {
-        return [...prevCart, { ...item, quantity: 1 }]; // Establece la cantidad inicial como 1
+        // Si el producto no está en el carrito, añádelo con la cantidad especificada
+        return [...prevCart, { ...item, quantity: item.quantity }]; // Usa la cantidad seleccionada
       }
     });
   };
+  
 
   const removeFromCart = (id) => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== id));

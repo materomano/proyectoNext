@@ -22,10 +22,10 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-10 flex justify-center items-center backdrop-blur-xl px-3">
+    <div className=" inset-0 z-10 flex justify-center items-center  px-3">
       <form
         onSubmit={handleSubmit}
-        className="bg-blue-900 py-4 px-6 rounded-xl max-w-md w-full space-y-4"
+        className="bg-blue-500 py-4 px-6 rounded-xl max-w-md w-full space-y-4"
       >
         <div className="flex justify-center items-center ">
           <IoPersonOutline className="text-9xl text-white border-2 rounded-full border-white p-4" />
@@ -70,7 +70,7 @@ const LoginForm = () => {
               onClick={() => googleLogin()}
             >
               <FcGoogle className="text-3xl" />
-              Login with Google
+                 Login with Google
             </button>
           </div>
           <button

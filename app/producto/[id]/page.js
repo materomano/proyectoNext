@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { db } from '@/app/firebase/config';
@@ -6,12 +6,21 @@ import Image from "next/image";
 import Boton from "@/app/components/Boton";
 import { useCartContext } from "@/app/context/CartContext";
 import { collection, where, query, getDocs } from "firebase/firestore";
-import Spinner from "@/app/producto/[id]/Spinner"; // Importa el componente Spinner
+import Spinner from "@/app/producto/[id]/Spinner";
+
+export const generateStaticsParams = () => {
+  return [
+    {category: 'Autos'},
+    {category: 'Camionetas'},
+    {category: 'Electricos'}
+  ]
+}
 
 const ProductDetail = () => {
-  const { id } = useParams(); // Obtén el id de los parámetros de la URL
+  const { id } = useParams(); 
   const [loading, setLoading] = useState(false);
   const [singleProduct, setSingleProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCartContext();
 
   useEffect(() => {
@@ -19,7 +28,6 @@ const ProductDetail = () => {
       if (id) {
         setLoading(true);
         const product = await getProduct(id);
-        console.log(product);
         setSingleProduct(product);
         setLoading(false);
       }
@@ -36,10 +44,9 @@ const ProductDetail = () => {
 
       if (!querySnapshot.empty) {
         const productData = querySnapshot.docs[0].data();
-       
         return productData;
       } else {
-        console.log("Producto no encontrado");
+        
         return null;
       }
     } catch (error) {
@@ -50,50 +57,77 @@ const ProductDetail = () => {
 
   const handleAddToCart = () => {
     if (singleProduct) {
-      addToCart(singleProduct);
+      const productWithQuantity = { ...singleProduct, quantity };
+      addToCart(productWithQuantity);
       alert(`"${singleProduct.title}" ha sido agregado al carrito!`);
     }
+  };
+
+  const handleIncreaseQuantity = () => {
+    if (quantity < singleProduct.inStock) {
+      setQuantity((prev) => prev + 1);
+    } else {
+      alert(`No puedes agregar más de ${singleProduct.inStock} unidades de este producto.`);
+    }
+  };
+
+  const handleDecreaseQuantity = () => {
+    if (quantity > 1) setQuantity((prev) => prev - 1);
   };
 
   return (
     <>
       {loading ? (
-        <Spinner /> // Reemplaza el texto de carga con el spinner
+        <Spinner />
       ) : singleProduct ? (
-        <div className="max-w-sm rounded overflow-hidden shadow-lg m-4 item-center">
-          <div className="px-6 py-4">
+        <div className="flex flex-col md:flex-row rounded overflow-hidden shadow-lg m-4 items-center">
+
+          <div className="md:w-1/2 w-full p-2 flex justify-center">
             <div className="relative">
               <Image
                 src={singleProduct.image}
                 alt={singleProduct.title}
                 width={400}
                 height={250}
-                className="object-cover"
+                className="rounded-lg"
               />
             </div>
-            <div className="font-bold text-xl mb-2">
-              {singleProduct.title}
-            </div>
-            <div className="flex justify-between items-center">
-              <p className="text-gray-700 text-base">
-                {singleProduct.description}
-              </p>
-            </div>
           </div>
-          <div className="px-6 pt-4 pb-2">
-            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-              {singleProduct.category}
-            </span>
-            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-              ${singleProduct.price}
-            </span>
-          </div>
-          <div className="flex justify-center py-4">
-            <Boton onClick={handleAddToCart} className="p-3">
-              Agregar al carrito
-            </Boton>
+
+          {/* Product Details Container */}
+          <div className="md:w-1/2 w-full px-6 py-4">
+            <div className="font-bold text-xl mb-2 text-center md:text-left">{singleProduct.title}</div>
+            <p className="text-gray-700 text-base mb-4 text-center md:text-left">{singleProduct.description}</p>
+
+            <div className="mb-4 text-center md:text-left">
+              <span className="text-xl font-bold">${singleProduct.price}</span>
+            </div>
+
+            {/* Quantity Control */}
+            <div className="flex items-center justify-center md:justify-start mb-4">
+              <Boton
+                onClick={handleDecreaseQuantity}
+                className="p-2"
+              >
+                -
+              </Boton>
+              <span className="text-lg p-4">{quantity}</span>
+              <Boton
+                onClick={handleIncreaseQuantity}
+                className="p-2"
+              >
+                +
+              </Boton>
+            </div>
+
+            <div className="flex justify-center md:justify-start py-4">
+              <Boton onClick={handleAddToCart} className="p-3">
+                Agregar al carrito
+              </Boton>
+            </div>
           </div>
         </div>
+
       ) : (
         <h1>Producto no encontrado</h1>
       )}
@@ -102,4 +136,6 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
+
+
 

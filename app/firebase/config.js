@@ -11,18 +11,21 @@ const firebaseConfig = {
   projectId: "next-app-25047",
   storageBucket: "next-app-25047.appspot.com",
   messagingSenderId: "367082811275",
-  appId: "1:367082811275:web:4dada0743a1e45eacd098e"
-};
-
+  appId: "1:367082811275:web:4dada0743a1e45eacd098e",
+  
+}
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app) ;
  const storage = getStorage(app)
 export const auth = getAuth(app)
-export const provider = new GoogleAuthProvider()
+
+const googleProvider = new GoogleAuthProvider();
 
 export{
 
   db, 
-  storage
+  storage,
+  googleProvider,
+  
 };
